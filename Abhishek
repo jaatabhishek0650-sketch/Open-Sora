@@ -1,0 +1,13 @@
+import streamlit as st
+from diffusers import CogVideoXPipeline  # या चुने हुए मॉडल का पाइपलाइन
+import torch
+
+pipe = CogVideoXPipeline.from_pretrained("THUDM/CogVideoX-5b", torch_dtype=torch.bfloat16).to("cuda")
+
+st.title("Text to Video Generator")
+
+prompt = st.text_input("Enter your text prompt:")
+if st.button("Generate Video"):
+    with st.spinner("Generating..."):
+        video = pipe(prompt).frames[0]
+        st.video(video)
